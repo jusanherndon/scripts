@@ -3,20 +3,12 @@ import requests
 import os
 import xmltodict
 
-# Getting xml from SubsPlease amd saving it to a file
+# Getting xml from SubsPlease and converting it into a dictionary
 url = "https://subsplease.org/rss/?t&r=1080"
 xml_rss_feed = requests.get(url)
-with open('shows.xml','wb') as xml:
-    xml.write(xml_rss_feed.content)
+xml_dict = xmltodict.parse(xml_rss_feed.content)
 
-# Reimporting xml and translating it into a dict to be searchable
-with open('shows.xml') as test:
-    xml_dict = xmltodict.parse(test.read())
-
-#automatically removes the xml file so space is not wasted on the device
-os.remove('shows.xml')
-
-# This section is to get the show title and make them searchable, since python3.9 can search through 
+# This section is to get the show title and make them searchable, since python3 can search through 
 # lists but not dictionaries
 show_list = []
 for num in range(0, len(xml_dict['rss']['channel']['item'])):
@@ -35,7 +27,17 @@ with open("shows.txt", 'r') as shows:
                 show_names.append(show_list[num].strip())
                 trackers.update({show_list[num].strip():torrent_file_link.content})
 
+# moving completed torrents to the watch directory for my torrenting client and removing the file if the torrent
+# already exists
 for name in show_names:
     with open(f"{name}.torrent", "wb") as torrent_file:
         torrent_file.write(trackers[name])
+    
+    path = os.path.join('/home/pi/jellyfin/watch',f"{name}.torrent")
+    if(os.path.isfile(path)):
+        os.remove(f"{name}.torrent")
+    else:
+        curent_directory = os.getcwd()
+        file_name = os.path.join(os.getcwd(),f"{name}.torrent")
+        os.replace(file_name,path)
 
