@@ -37,7 +37,8 @@ for name in show_names:
     if(os.path.isfile(path)):
         os.remove(f"{name}.torrent")
     else:
+        final_path = os.path.join('/home/pi/jellyfin/watch',f"{name}.torrent")
         curent_directory = os.getcwd()
         file_name = os.path.join(os.getcwd(),f"{name}.torrent")
-        os.replace(file_name,path)
+        os.replace(file_name,final_path)
 
