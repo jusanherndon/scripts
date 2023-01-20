@@ -33,7 +33,7 @@ for name in show_names:
     with open(f"{name}.torrent", "wb") as torrent_file:
         torrent_file.write(trackers[name])
     
-    path = os.path.join('/home/pi/jellyfin/watch',f"{name}.torrent")
+    path = os.path.join('/home/pi/jellyfin/watch',f"{name}.torrent.invalid")
     if(os.path.isfile(path)):
         os.remove(f"{name}.torrent")
     else:
