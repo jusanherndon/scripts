@@ -14,7 +14,7 @@ with open('shows.xml') as test:
     xml_dict = xmltodict.parse(test.read())
 
 #automatically removes the xml file so space is not wasted on the device
-#os.remove('shows.xml')
+os.remove('shows.xml')
 
 # This section is to get the show title and make them searchable, since python3.9 can search through 
 # lists but not dictionaries
@@ -39,30 +39,3 @@ for name in show_names:
     with open(f"{name}.torrent", "wb") as torrent_file:
         torrent_file.write(trackers[name])
 
-        #torrent.write(trackers[show_name])
-    #torrent.close()
-#"{}.torrent".format(show_name),
-# ToDo: once show is found add logic to download the torrent file from the link and move to the wacth directory so that deluge can automatically download the torrent
-
-
-
-
-
-
-#ToDo: add logic to remove .torrent files automatically, so I don't have to clean them up later
-
-
-
-
-
-#tree = ET.parse('shows.xml')
-#root = tree.getroot()
-
-#attribArray = [element.attrib.get('title','') for element in root.findall('./channel/item')]
-#print(attribArray)
-
-#for items in root.findall('.//*'):
-    
-    #for child in items: 
-        #print(child.tag, child.attrib)
-        #print()
