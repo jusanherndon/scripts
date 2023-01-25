@@ -1,1 +1,3 @@
+# cron job associated with the deluge torrent script, runs automatically everyday
+# at 11:05 and 1:05 
 5 11,13 * * * python3 ~/scripts/download.py

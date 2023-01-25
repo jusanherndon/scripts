@@ -19,7 +19,7 @@ trackers = {}
 show_names = []
 
 #importing show names and implementing logic to check for each show name within the xml file
-show_path = os.path.abspath("/home/pi/scripts/deluge/shows.txt")
+show_path = os.path.abspath("~/scripts/deluge/shows.txt")
 with open(show_path, 'r') as shows:
     for show in shows.readlines():
         for num in range(0, len(xml_dict['rss']['channel']['item'])):
