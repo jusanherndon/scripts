@@ -34,11 +34,11 @@ for name in show_names:
     with open(f"{name}.torrent", "wb") as torrent_file:
         torrent_file.write(trackers[name])
     
-    path = os.path.join('/home/pi/jellyfin/watch',f"{name}.torrent.invalid")
+    path = os.path.join('~/jellyfin/watch',f"{name}.torrent.invalid")
     if(os.path.isfile(path)):
         os.remove(f"{name}.torrent")
     else:
-        final_path = os.path.join('/home/pi/jellyfin/watch',f"{name}.torrent")
+        final_path = os.path.join('~/jellyfin/watch',f"{name}.torrent")
         curent_directory = os.getcwd()
         file_name = os.path.join(os.getcwd(),f"{name}.torrent")
         os.replace(file_name,final_path)
