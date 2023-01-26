@@ -3,53 +3,38 @@ import requests
 import os
 import xmltodict
 
-def find_file(name, path):
-    for root, dirs, files in os.walk(path):
-        if name in files:
-            return os.path.join(root, name) 
+# Getting xml from SubsPlease and converting it into a dictionary
+url = "https://subsplease.org/rss/?t&r=1080"
+xml_rss_feed = requests.get(url)
+xml_dict = xmltodict.parse(xml_rss_feed.content)
+# This section is to get the show title and make them searchable, since python3 can search through 
+# lists but not dictionaries
+show_list = []
+for num in range(0, len(xml_dict['rss']['channel']['item'])):
+        show_list.append(xml_dict['rss']['channel']['item'][num]['title'])
+# Creating new dictionary and a list to hold show names and torrent tracker info
+trackers = {}
+show_names = []
 
-def get_xml_data_and_return_a_dict(url):
-    xml_rss_feed = requests.get(url)
-    return xmltodict.parse(xml_rss_feed.content)
-
-def make_show_list(url):
-    xml_dict = get_xml_data_and_return_a_dict(url)
-    list_show = []
-
-    for num in range(0, len(xml_dict['rss']['channel']['item'])):
-        list_show.append(xml_dict['rss']['channel']['item'][num]['title'])
-
-    return list_show, xml_dict
-
-def search_for_shows():
-    torrent_link = {}
-    names = []
-    with open(show_path, 'r') as shows:
-        for show in shows.readlines():
-            for num in range(0, len(xml_dict['rss']['channel']['item'])):
-                if show.strip() in show_list[num]:
-                    torrent_file_link = requests.get(xml_dict['rss']['channel']['item'][num]['link'])
-                    names.append(show_list[num].strip())
-                    torrent_link[show_list[num].strip()] = torrent_file_link.content
-    return names, torrent_link
-
-def save_shows_and_move_shows(watch_directory):
-    for name in show_names:
-        with open(f"{name}.torrent", "wb") as torrent_file:
-            torrent_file.write(trackers[name])
-
-        path = os.path.join(watch_directory,f"{name}.torrent.invalid")
-        curent_directory = os.getcwd()
-        if(os.path.isfile(path)):
-            os.remove(f"{name}.torrent")
-        else:
-            final_path = os.path.join(watch_directory,f"{name}.torrent")
-            file_name = os.path.join(current_directory,f"{name}.torrent")
-            os.replace(file_name,final_path)
-
-
-
-show_list,xml_dict = make_show_list("https://subsplease.org/rss/?t&r=1080")
-show_path = find_file('shows.txt','/home/pi/scripts')
-show_names, trackers = search_for_shows()
-save_shows_and_move_shows('~/jellyfin/watch') 
+#importing show names and implementing logic to check for each show name within the xml file
+show_path = os.path.abspath("/home/pi/scripts/deluge/shows.txt")
+with open(show_path, 'r') as shows:
+    for show in shows.readlines():
+        for num in range(0, len(xml_dict['rss']['channel']['item'])):
+            if show.strip() in show_list[num]:
+                torrent_file_link = requests.get(xml_dict['rss']['channel']['item'][num]['link'])
+                show_names.append(show_list[num].strip())
+                trackers.update({show_list[num].strip():torrent_file_link.content})
+# moving completed torrents to the watch directory for my torrenting client and removing the file if the torrent
+# already exists
+for name in show_names:
+    with open(f"{name}.torrent", "wb") as torrent_file:
+        torrent_file.write(trackers[name])
+    
+    path = os.path.join('/home/pi/jellyfin/watch',f"{name}.torrent.invalid")
+    if(os.path.isfile(path)):
+        os.remove(f"{name}.torrent")
+    else:
+        final_path = os.path.join('/home/pi/jellyfin/watch',f"{name}.torrent")
+        file_name = os.path.join(os.getcwd(),f"{name}.torrent")
+        os.replace(file_name,final_path)
