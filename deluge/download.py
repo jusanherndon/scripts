@@ -1,6 +1,7 @@
 import xml.etree.ElementTree as ET
 import requests
 import os
+import shutil
 import xmltodict
 
 # Getting xml from SubsPlease and converting it into a dictionary
@@ -17,7 +18,7 @@ trackers = {}
 show_names = []
 
 #importing show names and implementing logic to check for each show name within the xml file
-show_path = os.path.abspath("/home/pi/scripts/deluge/shows.txt")
+show_path = os.path.abspath("/home/justin/git/scripts/deluge/shows.txt")
 with open(show_path, 'r') as shows:
     for show in shows.readlines():
         for num in range(0, len(xml_dict['rss']['channel']['item'])):
@@ -31,10 +32,10 @@ for name in show_names:
     with open(f"{name}.torrent", "wb") as torrent_file:
         torrent_file.write(trackers[name])
     
-    path = os.path.join('/home/pi/jellyfin/watch',f"{name}.torrent.invalid")
+    path = os.path.join('/home/justin/watch',f"{name}.torrent.invalid")
     if(os.path.isfile(path)):
         os.remove(f"{name}.torrent")
     else:
-        final_path = os.path.join('/home/pi/jellyfin/watch',f"{name}.torrent")
+        final_path = os.path.join('/home/justin/watch',f"{name}.torrent")
         file_name = os.path.join(os.getcwd(),f"{name}.torrent")
-        os.replace(file_name,final_path)
+        shutil.move(file_name,final_path)
