@@ -1,6 +1,6 @@
 # cron job associated with the deluge torrent script, runs automatically everyday
 # at 11:05 and 1:05 
-5  11  * * 1 python3 ~/git/scripts/deluge/download.py
-5  11  * * 3 python3 ~/git/scripts/deluge/download.py
-35 10  * * 4 python3 ~/git/scripts/deluge/download.py
-35 11  * * 5 python3 ~/git/scripts/deluge/download.py
+5  11    * * 1 python3 ~/git/scripts/deluge/download.py
+5  11    * * 3 python3 ~/git/scripts/deluge/download.py
+35 10    * * 4 python3 ~/git/scripts/deluge/download.py
+35 10,12 * * 6 python3 ~/git/scripts/deluge/download.py
