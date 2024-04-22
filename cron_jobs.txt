@@ -21,9 +21,8 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 #
 # m h  dom mon dow   command
-20  9,11          * * 0 /usr/bin/python3 ~/git/scripts/deluge/download.py
-35  11            * * 1 /usr/bin/python3 ~/git/scripts/deluge/download.py
-35  8,10          * * 3 /usr/bin/python3 ~/git/scripts/deluge/download.py
-35  11            * * 4 /usr/bin/python3 ~/git/scripts/deluge/download.py
-35  10,12         * * 5 /usr/bin/python3 ~/git/scripts/deluge/download.py
-05  9,11,13       * * 6 /usr/bin/python3 ~/git/scripts/deluge/download.py
+05  9,10,11                * * 0 /usr/bin/python3 ~/git/scripts/deluge/download.py
+35  7,13                   * * 1 /usr/bin/python3 ~/git/scripts/deluge/download.py
+35  7,9,10                 * * 3 /usr/bin/python3 ~/git/scripts/deluge/download.py
+05  10,12,14               * * 4 /usr/bin/python3 ~/git/scripts/deluge/download.py
+05  9,12                   * * 6 /usr/bin/python3 ~/git/scripts/deluge/download.py
