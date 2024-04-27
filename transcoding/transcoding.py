@@ -8,7 +8,8 @@ import json
 
 # step 2: take all needed inputs for this script
 
-shows_path = os.path.abspath("/home/justin/git/scripts/transcoding/shows.txt")
+#shows_path = os.path.abspath("/home/justin/git/scripts/transcoding/shows.txt")
+show_path = os.path.abspath("/home/justin/git/shows.txt")
 with open(show_path, 'r') as shows:
     for show in shows.readlines():
 
