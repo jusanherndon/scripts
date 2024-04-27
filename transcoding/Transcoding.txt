@@ -1,0 +1,55 @@
+Hard Subs 2 pass encode command (Subtitles are directly encoded on video): 
+
+ffmpeg -vaapi_device /dev/dri/renderD128 -i '[SubsPlease] Seiyuu Radio no Uraomote - 03 (1080p) [5278FFDE].mkv' -c:v hevc_amf -x265-params "pass=1:lossless=1" -an -f null /dev/null && ffmpeg -vaapi_device /dev/dri/renderD128 -i '[SubsPlease] Seiyuu Radio no Uraomote - 03 (1080p) [5278FFDE].mkv' -c:v hevc_amf -x265-params "pass=2:lossless=1" -filter_complex "subtitles='[SubsPlease] Seiyuu Radio no Uraomote - 03 (1080p) [5278FFDE].mkv'" -c:a aac output.mp4
+
+
+# Main issue is how to deal with the subtitles, since they will most likely
+# use more than one stream to display properly
+# ex. below has 16 streams. If I can assume Subs please uses index 0 as video,
+# index 1 as audio, all other streams should be substitle related
+
+Stream #0:0: Video: h264 (High), yuv420p(tv, bt709, progressive), 1920x1080 [SAR 1:1 DAR 16:9], 23.98 fps, 23.98 tbr, 1k tbn (default)
+Stream #0:1(jpn): Audio: aac (LC), 44100 Hz, stereo, fltp (default)
+Stream #0:2(eng): Subtitle: ass (default)
+Stream #0:3: Attachment: ttf
+Stream #0:4: Attachment: ttf
+Stream #0:5: Attachment: ttf
+Stream #0:6: Attachment: ttf
+Stream #0:7: Attachment: ttf
+Stream #0:8: Attachment: ttf
+Stream #0:9: Attachment: ttf
+Stream #0:10: Attachment: ttf
+Stream #0:11: Attachment: ttf
+Stream #0:12: Attachment: ttf
+Stream #0:13: Attachment: ttf
+Stream #0:14: Attachment: ttf
+Stream #0:15: Attachment: ttf
+Stream #0:16: Attachment: ttf
+
+
+First attempt at Soft Subs 2 pass encode:
+
+
+extract subs command: (probably will not work, since I do not know how many subtitle streams exist on any video before hand) (This method assumes all videos will only have a single subtitle stream) 
+
+ffmpeg -i input.mkv -codec:s srt subs.srt
+
+command to show all streams in video container: (if I can add a counter to this command and programatically generate a map from this, I think I can just copy the subtitle from the input video)
+
+ffprobe -show_entries stream=index,codec_type:stream_tags=language -of compact $video1 2>&1 | { while read line; do if $(echo "$line" | grep -q -i "stream #"); then echo "$line"; fi; done; while read -d $'\x0D' line; do if $(echo "$line" | grep -q "time="); then echo "$line" | awk '{ printf "%s\r", $8 }'; fi; done; }
+
+ffmpeg command:
+
+ffmpeg -vaapi_device /dev/dri/renderD128 -i Seiyuu_Radio_no_Uraomote_03.mkv -c:v hevc_amf -x265-params "pass=1:lossless=1" -an -f null /dev/null && ffmpeg -vaapi_device /dev/dri/renderD128 -i Seiyuu_Radio_no_Uraomote_03.mkv -f srt -i subs.srt -map 0:0 -c:v hevc_amf -map 0:1 -c:a aac -map 1:0 -c:s srt -x265-params "pass=2:lossless=1" output.mkv
+
+
+
+
+
+
+Here is a basic command I referenced to perserve subtitles: https://askubuntu.com/questions/214199/how-do-i-add-and-or-keep-subtitles-when-converting-video
+
+ffmpeg hevc.265 guide: https://trac.ffmpeg.org/wiki/Encode/H.265
+
+The current command is missing some of the subtitles. I need to perserve the
+metadata too.
