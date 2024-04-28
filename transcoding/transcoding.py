@@ -12,13 +12,13 @@ import re
 show_path = os.path.abspath("/home/justin/git/shows.txt")
 with open(show_path, 'r') as shows:
     for show in shows.readlines():
-
-        show_name_and_episode = re.findall("(?<=\])(.*?)(?=\()", show)
+        
+        # Match on just the show name so that was the file name looks nicer for the jellyfin server
+        show_name_and_episode = re.findall("(?<=\])(.*?)(?=\()", show.strip())
 
         if(re_match):
             transcoded_show_name = str(show_name_and_episode[0]).replace("-", " ").replace(" ", "_" )
 
-        # I think a found a flag that can invalidate steps 3 and 4, so here is the new order
         # step 3: Transcode the video using the old video as its base
 
         ffmpeg_cmd = f'ffmpeg -vaapi_device /dev/dri/renderD128 -i {show} -c:v hevc_amf -x265-params "pass=1:lossless=1" -an -f null /dev/null && ffmpeg -vaapi_device /dev/dri/renderD128 -i {show} -c:v hevc_amf -c:a aac -map_metadata 0:g -x265-params "pass=2:lossless=1" {transcoded_show_name}.mkv'
