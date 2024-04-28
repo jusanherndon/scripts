@@ -2,8 +2,6 @@ import os
 import subprocess
 import json
 
-from pyffmpeg import FFprobe
-
 # step 1: send video file or files with input list to this directory
 
 
@@ -16,10 +14,6 @@ with open(show_path, 'r') as shows:
     for show in shows.readlines():
 
         # step 3: find all ffmpeg streams inside of the video file or files
-        ffprobe = FFprobe(show)
-        metadtata = ffprobe.metadata
-
-        print(metadata[0][0]['codec'])
 
 
         # step 4: use the json output to generate the needed map identifying how many streams are needed for transcoding comamnd
