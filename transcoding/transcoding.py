@@ -15,9 +15,7 @@ with open(show_path, 'r') as shows:
         
         # Match on just the show name so that was the file name looks nicer for the jellyfin server
         show_name_and_episode = re.findall("(?<=\])(.*?)(?=\()", show.strip())
-
-        if(re_match):
-            transcoded_show_name = str(show_name_and_episode[0]).replace("-", " ").replace(" ", "_" )
+        transcoded_show_name = str(show_name_and_episode[0]).replace("-", " ").replace(" ", "_" )
 
         # step 3: Transcode the video using the old video as its base
 
@@ -26,4 +24,6 @@ with open(show_path, 'r') as shows:
 
         # step 4: send new video file to the jellyfin media server
 
+
+        # step 5 clean up any left over files
 
