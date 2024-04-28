@@ -13,7 +13,7 @@ show_path = os.path.abspath("/home/justin/git/shows.txt")
 with open(show_path, 'r') as shows:
     for show in shows.readlines():
 
-        show_name_and_episode = re.findall("/(?<=\ )(.*?)(?=\()", show)
+        show_name_and_episode = re.findall("(?<=\])(.*?)(?=\()", show)
 
         if(re_match):
             transcoded_show_name = str(show_name_and_episode[0]).replace("-", " ").replace(" ", "_" )
