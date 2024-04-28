@@ -13,14 +13,12 @@ show_path = os.path.abspath("/home/justin/git/shows.txt")
 with open(show_path, 'r') as shows:
     for show in shows.readlines():
 
-        # step 3: find all ffmpeg streams inside of the video file or files
+        # I think a found a flag that can invalidate steps 3 and 4, so here is the new order
+        # step 3: Transcode the video using the old video as its base
 
+        ffmpeg_cmd = f"ffmpeg -vaapi_device /dev/dri/renderD128 -i {show} -c:v hevc_amf -x265-params "pass=1:lossless=1" -an -f null /dev/null && ffmpeg -vaapi_device /dev/dri/renderD128 -i {show} -c:v hevc_amf -c:a aac -map_metadata 0:g -x265-params "pass=2:lossless=1" output.mkv"
+        process = subprocess.Popen(ffprobe_cmd,stdout=subprocess.PIPE,stderr=subprocess.PIPE, shell=True)
 
-        # step 4: use the json output to generate the needed map identifying how many streams are needed for transcoding comamnd
-        # and figure out placement of said strams like this ex. 0:0 video  0:1 audio 0:2 sub 0:x end of subtitles
-
-
-
-        # step 5: use ffmeg to transcode the video file from HEV.264 to HEVC.265 with perserving the video, audio, and subtitle streams
+        # step 4: send new video file to the jellyfin media server
 
 
