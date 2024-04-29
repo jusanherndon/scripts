@@ -32,7 +32,7 @@ for name in show_names:
     with open(f"{name}.torrent", "wb") as torrent_file:
         torrent_file.write(trackers[name])
     with open(f"show_names.txt", "wb") as show_names_output:
-        show_names_output.append(f'{name}.mkv\n')
+        show_names_output.append(f'{name}.mkv')
     
     path = os.path.join('/home/justin/watch',f"{name}.torrent.invalid")
     if(os.path.isfile(path)):
