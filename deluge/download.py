@@ -44,5 +44,6 @@ for name in show_names:
         shutil.move(file_name,final_path)
 
 # New file to keep track of shows to trancode
-with open("show_names.txt", "w") as show_names_output:
-    show_names_output.writelines(output_shows)
+if (output_shows):
+    with open("show_names.txt", "w") as show_names_output:
+        show_names_output.writelines(output_shows)
