@@ -28,9 +28,6 @@ with open(show_path, 'r') as shows:
                 show_names.append(show_list[num].strip())
                 output_shows.append(f"{show_list[num].strip()}\n")
                 trackers.update({show_list[num].strip():torrent_file_link.content})
-# New file to keep track of shows to trancode
-with open("show_names.txt", "w") as show_names_output:
-    show_names_output.writelines(output_shows)
 # moving completed torrents to the watch directory for my torrenting client and removing the file if the torrent
 # already exists
 for name in show_names:
@@ -38,9 +35,14 @@ for name in show_names:
         torrent_file.write(trackers[name])
     
     path = os.path.join('/home/justin/watch',f"{name}.torrent.invalid")
-    if(os.path.isfile(path)):
+    if (os.path.isfile(path)):
         os.remove(f"{name}.torrent")
+        output_shows.remove(f"{name}\n")
     else:
         final_path = os.path.join('/home/justin/watch',f"{name}.torrent")
         file_name = os.path.join(os.getcwd(),f"{name}.torrent")
         shutil.move(file_name,final_path)
+
+# New file to keep track of shows to trancode
+with open("show_names.txt", "w") as show_names_output:
+    show_names_output.writelines(output_shows)
