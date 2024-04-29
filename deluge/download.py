@@ -16,6 +16,7 @@ for num in range(0, len(xml_dict['rss']['channel']['item'])):
 # Creating new dictionary and a list to hold show names and torrent tracker info
 trackers = {}
 show_names = []
+output_shows = []
 
 #importing show names and implementing logic to check for each show name within the xml file
 show_path = os.path.abspath("/home/justin/git/scripts/deluge/shows.txt")
@@ -25,14 +26,15 @@ with open(show_path, 'r') as shows:
             if show.strip() in show_list[num]:
                 torrent_file_link = requests.get(xml_dict['rss']['channel']['item'][num]['link'])
                 show_names.append(show_list[num].strip())
+                output_shows.append(f"{show_list[num].strip()}\n")
                 trackers.update({show_list[num].strip():torrent_file_link.content})
 # moving completed torrents to the watch directory for my torrenting client and removing the file if the torrent
 # already exists
+with open("show_names.txt", "w") as show_names_output:
+    show_names_output.writelines(output_shows)
 for name in show_names:
     with open(f"{name}.torrent", "wb") as torrent_file:
         torrent_file.write(trackers[name])
-    with open("show_names.txt", "wb") as show_names_output:
-        show_names_output.append(f"{name}.mkv\n")
     
     path = os.path.join('/home/justin/watch',f"{name}.torrent.invalid")
     if(os.path.isfile(path)):
