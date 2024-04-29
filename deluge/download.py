@@ -28,10 +28,11 @@ with open(show_path, 'r') as shows:
                 show_names.append(show_list[num].strip())
                 output_shows.append(f"{show_list[num].strip()}\n")
                 trackers.update({show_list[num].strip():torrent_file_link.content})
-# moving completed torrents to the watch directory for my torrenting client and removing the file if the torrent
-# already exists
+# New file to keep track of shows to trancode
 with open("show_names.txt", "w") as show_names_output:
     show_names_output.writelines(output_shows)
+# moving completed torrents to the watch directory for my torrenting client and removing the file if the torrent
+# already exists
 for name in show_names:
     with open(f"{name}.torrent", "wb") as torrent_file:
         torrent_file.write(trackers[name])
