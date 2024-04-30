@@ -3,13 +3,11 @@ import subprocess
 import re
 
 # step 1: send show_names.txt to this machine
-
 scp_cmd = "scp justin@192.168.1.115:/home/justin/show_names.txt /home/justin/show_names.txt"
 process = subprocess.run(scp_cmd, shell=True, check=True)
 
 # step 2: take all needed inputs for this script
 
-#shows_path = os.path.abspath("/home/justin/git/scripts/transcoding/shows.txt")
 show_path = os.path.abspath("/home/justin/show_names.txt")
 with open(show_path, 'r') as shows:
     for show in shows.readlines():
@@ -20,7 +18,7 @@ with open(show_path, 'r') as shows:
         print(transcoded_show_name)
 
         # copy over the video file to this pc
-        scp_video_cmd = f"scp justin@192.168.1.115:/mnt/jellyfin/shows/'{show.strip()}' /home/justin/{transcoded_show_name}"
+        scp_video_cmd = f"scp justin@192.168.1.115:/mnt/deluge/'{show.strip()}' /home/justin/{transcoded_show_name}"
         process = subprocess.run(scp_video_cmd, shell=True, check=True)
 
         # step 3: Transcode the video using the old video as its base
@@ -29,7 +27,11 @@ with open(show_path, 'r') as shows:
         process = subprocess.run(ffmpeg_cmd, shell=True, check=True)
 
         # step 4: send new video file to the jellyfin media server
+        scp_transcode_video_cmd = f"scp /home/justin/transcoded_{transcoded_show_name} justin@192.168.1.115:/mnt/jellfin/shows/transcoded_{transcoded_show_name}"
+        process = subprocess.run(scp_transcode_video_cmd, shell=True, check=True)
         
-
         # step 5 clean up any left over files
+        os.remove("show_names.txt")
+        os.remove(f"'{show.strip()}'")
+        os.remove(f"transcoded_{transcoded_show_name}")
 
