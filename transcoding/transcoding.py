@@ -16,15 +16,14 @@ with open(show_path, 'r') as shows:
         show_name_and_episode = re.findall("(?<=\ )(.*?)(?=\()", show.strip())
         transcoded_show_name = str(show_name_and_episode[0] + ".mkv").replace("-", " ").replace(" ", "_" )
 
-        # copy over the video file to this pc
-        #scp_video_cmd = f"scp justin@192.168.1.115:/mnt/deluge/'{show.strip()}' /home/justin/{transcoded_show_name}"
-        #scp_video_cmd = f"scp justin@192.168.1.115:/mnt/jellyfin/shows/'{show.strip()}' /home/justin/{transcoded_show_name}"
-        #process = subprocess.run(scp_video_cmd, shell=True, check=True)
+        copy over the video file to this pc
+        scp_video_cmd = f"scp justin@192.168.1.115:/mnt/deluge/'{show.strip()}' /home/justin/{transcoded_show_name}"
+        process = subprocess.run(scp_video_cmd, shell=True, check=True)
 
         # step 3: Transcode the video using the old video as its base
 
-        #ffmpeg_cmd = f'ffmpeg -vaapi_device /dev/dri/renderD128 -i {transcoded_show_name} -c:v hevc_amf -x265-params "pass=1:lossless=1" -an -f null /dev/null && ffmpeg -vaapi_device /dev/dri/renderD128 -i {transcoded_show_name} -c:v hevc_amf -c:a aac -map_metadata 0:g -x265-params "pass=2:lossless=1" transcoded_{transcoded_show_name}'
-        #process = subprocess.run(ffmpeg_cmd, shell=True, check=True)
+        ffmpeg_cmd = f'ffmpeg -vaapi_device /dev/dri/renderD128 -i {transcoded_show_name} -c:v hevc_amf -x265-params "pass=1:lossless=1" -an -f null /dev/null && ffmpeg -vaapi_device /dev/dri/renderD128 -i {transcoded_show_name} -c:v hevc_amf -c:a aac -map_metadata 0:g -x265-params "pass=2:lossless=1" transcoded_{transcoded_show_name}'
+        process = subprocess.run(ffmpeg_cmd, shell=True, check=True)
 
         # step 4: send new video file to the jellyfin media server
         scp_transcode_video_cmd = f"scp transcoded_{transcoded_show_name} justin@192.168.1.115:/mnt/jellyfin/shows"
