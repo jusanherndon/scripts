@@ -23,7 +23,7 @@ with open(show_path, 'r') as shows:
 
         # step 3: Transcode the video using the old video as its base
 
-        ffmpeg_cmd = f'ffmpeg -vaapi_device /dev/dri/renderD128 -i "{show_name}" -x265-params "pass=1" -c:v hevc_amf -rc cqp -qp_p 0 -qp_i 0 -an -f null /dev/null && ffmpeg -vaapi_device /dev/dri/renderD128 -i "{show_name}" -map_metadata 0:g -x265-params "pass=2" -c:v hevc_amf -usage transcoding -qp_p 20 -qp_i 20 -c:a aac "{transcoded_show_name}"'
+        ffmpeg_cmd = f'ffmpeg -vaapi_device /dev/dri/renderD128 -i "{show_name}" -x265-params "pass=1" -c:v hevc_amf -an -f null /dev/null && ffmpeg -vaapi_device /dev/dri/renderD128 -i "{show_name}" -map_metadata 0:g -x265-params "pass=2" -c:v hevc_amf -usage transcoding -qp_p 20 -qp_i 20 -c:a aac "{transcoded_show_name}"'
         process = subprocess.run(ffmpeg_cmd, shell=True, check=True)
 
         # step 4: send new video file to the jellyfin media server
