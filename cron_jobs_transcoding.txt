@@ -21,8 +21,8 @@
 # For more information see the manual pages of crontab(5) and cron(8)
 #
 # m h  dom mon dow   command
-15  9,10,11                 * * 0 /usr/bin/python3 ~/git/scripts/transcoding/transcoding.py
-05  8,14                    * * 1 /usr/bin/python3 ~/git/scripts/transcoding/transcoding.py
-05  8,10,11                 * * 3 /usr/bin/python3 ~/git/scripts/transcoding/transcoding.py
-15  10,12,14                * * 4 /usr/bin/python3 ~/git/scripts/transcoding/transcoding.py
-15  9,12                    * * 6 /usr/bin/python3 ~/git/scripts/transcoding/transcoding.py
+15  9,10,11                    * * 0 /usr/bin/python3 ~/git/scripts/transcoding/transcoding.py
+05  8,14                       * * 1 /usr/bin/python3 ~/git/scripts/transcoding/transcoding.py
+05  8,10,11,12                 * * 3 /usr/bin/python3 ~/git/scripts/transcoding/transcoding.py
+15  10,12,14                   * * 4 /usr/bin/python3 ~/git/scripts/transcoding/transcoding.py
+15  9,12                       * * 6 /usr/bin/python3 ~/git/scripts/transcoding/transcoding.py
