@@ -1,6 +1,7 @@
 import os
 import subprocess
 import re
+import time
 
 # step 1: send show_names.txt to this machine
 scp_cmd = "scp justin@192.168.1.115:/home/justin/show_names.txt /home/justin/show_names.txt"
@@ -33,5 +34,7 @@ with open(show_path, 'r') as shows:
         # step 5 clean up any left over files
         os.remove(f'{show_name}')
         os.remove(f'{transcoded_show_name}')
+
+        time.sleep(300)
 # Do this removal at the end, since its the enitre show name file
 os.remove("show_names.txt")
