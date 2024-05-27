@@ -9,12 +9,12 @@ show_path = os.path.abspath("/mnt/nas/show_names.txt")
 with open(show_path, 'r') as shows:
     for show in shows.readlines():
 
-        # Match on just the show name so that was the file name looks nicer for the jellyfin server
+        # Match on two things: show name and episode and just the show name
         show_name_and_episode_list = re.findall("(?=\ )(.*?)(?=\()", show.strip())
-        show_name_and_episode = str(show_name_and_episode_list[0].strip())
+        show_name_and_episode = str(show_name_and_episode_list[0].strip() + ".mkv")
+
         show_name_regex = re.findall("(?<=\ )(.*?)(?=\ -)", show_name_and_episode)
         show_name = str(show_name_regex[0].strip())
-        show_name_and_episode += ".mkv"
         transcoded_show_name = f"transcoded_{show_name_and_episode}"
 
         #copy over the video file to this pc
