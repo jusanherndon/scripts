@@ -13,7 +13,7 @@ with open(show_path, 'r') as shows:
         show_name_and_episode_list = re.findall("(?=\ )(.*?)(?=\()", show.strip())
         # Adding this try except block to handle shows names with (year) in their names
         try:
-            show_name_and_episode = str(show_name_and_episode_list[0].strip() + f' {show_name_and_episode_list[1].strip()}.mkv')
+            show_name_and_episode = f"{show_name_and_episode_list[0].strip()} {show_name_and_episode_list[1].strip()}.mkv")
         except:
             show_name_and_episode = str(show_name_and_episode_list[0].strip() + ".mkv")
 
