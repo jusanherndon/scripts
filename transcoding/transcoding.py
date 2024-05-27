@@ -12,8 +12,9 @@ with open(show_path, 'r') as shows:
         # Match on two things: show name and episode and just the show name
         show_name_and_episode_list = re.findall("(?=\ )(.*?)(?=\()", show.strip())
         show_name_and_episode = str(show_name_and_episode_list[0].strip() + ".mkv")
+        show_name_and_episode_for_regex = str(show_name_and_episode_list[0])
 
-        show_name_regex = re.findall("(?<=\ )(.*?)(?=\ -)", show_name_and_episode)
+        show_name_regex = re.findall("(?<=\ )(.*?)(?=\ - [0-9][0-9])", show_name_and_episode_for_regex)
         show_name = str(show_name_regex[0].strip())
         transcoded_show_name = f"transcoded_{show_name_and_episode}"
 
