@@ -47,3 +47,4 @@ for name in show_names:
 if (output_shows):
     with open("show_names.txt", "w") as show_names_output:
         show_names_output.writelines(output_shows)
+    shutil.move("/home/justin/show_names.txt","/mnt/nas/show_names.txt")
