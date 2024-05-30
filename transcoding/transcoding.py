@@ -15,7 +15,7 @@ with open(show_path, 'r') as shows:
         try:
             show_name_and_episode = f"{show_name_and_episode_list[0].strip()} {show_name_and_episode_list[1].strip()}.mkv"
         except:
-            show_name_and_episode = str(show_name_and_episode_list[0] + ".mkv")
+            show_name_and_episode = str(show_name_and_episode_list[0].strip() + ".mkv")
 
         show_name_regex = re.findall("(?<=\ )(.*?)(?=\ - [0-9][0-9])", show_name_and_episode)
         show_name = str(show_name_regex[0].strip())
