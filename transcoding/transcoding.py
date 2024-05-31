@@ -13,17 +13,16 @@ with open(show_path, 'r') as shows:
         show_name_and_episode_list = re.findall("(?=\ )(.*?)(?=\()", show.strip())
         # Adding this try except block to handle shows names with (year) in their names
         try:
-            show_name_and_episode = f"{show_name_and_episode_list[0].strip()} {show_name_and_episode_list[1].strip()}.mkv")
+            show_name_and_episode = f"{show_name_and_episode_list[0].strip()} {show_name_and_episode_list[1].strip()}.mkv"
         except:
             show_name_and_episode = str(show_name_and_episode_list[0].strip() + ".mkv")
 
-        show_name_and_episode_for_regex = str(show_name_and_episode_list[0])
-        show_name_regex = re.findall("(?<=\ )(.*?)(?=\ - [0-9][0-9])", show_name_and_episode_for_regex)
+        show_name_regex = re.findall("(?<=\ )(.*?)(?=\ - [0-9][0-9])", show_name_and_episode)
         show_name = str(show_name_regex[0].strip())
-        transcoded_show_name = f"transcoded_{show_name_and_episode}"
+        transcoded_show_name = f"transcoded_{show_name_and_episode.strip()}"
 
         #copy over the video file to this pc
-        #scp_video_cmd = f"scp justin@192.168.1.115:/mnt/deluge/'{show.strip()}' /home/justin/'{show_name_and_episode}'"
+        scp_video_cmd = f"scp justin@192.168.1.115:/mnt/deluge/'{show.strip()}' /home/justin/'{show_name_and_episode}'"
         process = subprocess.run(scp_video_cmd, shell=True, check=True)
 
         # step 3: Transcode the video using the old video as its base
