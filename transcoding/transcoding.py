@@ -13,12 +13,12 @@ with open(show_path, 'r') as shows:
         show_name_and_episode_list = re.findall("(?=\ )(.*?)(?=\()", show.strip())
         # Adding this try except block to handle shows names with (year) in their names
         try:
-            show_name_and_episode = f"{show_name_and_episode_list[0]}{show_name_and_episode_list[1].strip()}.mkv"
+            show_name_and_episode = f"{show_name_and_episode_list[0]}{show_name_and_episode_list[1].strip()}"
         except:
-            show_name_and_episode = f"{show_name_and_episode_list[0]}.mkv")
+            show_name_and_episode = f"{show_name_and_episode_list[0]}")
 
         show_name_regex = re.findall("(?<=\ )(.*?)(?=\ - [0-9][0-9])", show_name_and_episode)
-        show_name = str(show_name_regex[0].strip())
+        show_name = f"{show_name_regex[0].strip()}.mkv"
         transcoded_show_name = f"transcoded_{show_name_and_episode.strip()}"
 
         #copy over the video file to this pc
