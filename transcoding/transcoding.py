@@ -18,7 +18,8 @@ with open(show_path, 'r') as shows:
             show_name_and_episode = f"{show_name_and_episode_list[0]}")
 
         show_name_regex = re.findall("(?<=\ )(.*?)(?=\ - [0-9][0-9])", show_name_and_episode)
-        show_name = f"{show_name_regex[0].strip()}.mkv"
+        show_name = f"{show_name_regex[0].strip()}"
+        show_name_and_episode = f"{show_name_and_episode.strip()}.mkv"
         transcoded_show_name = f"transcoded_{show_name_and_episode.strip()}"
 
         #copy over the video file to this pc
